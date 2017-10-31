@@ -2,7 +2,10 @@ const path = require("path");
 const webpack = require("webpack");
 const {CheckerPlugin} = require("awesome-typescript-loader");
 
+const isProdutcion = process.argv.indexOf("-p") !== -1;
+
 module.exports = {
+    devtool: !isProdutcion && "source-map",
     entry: {
         commons: [
             "promise-polyfill",
