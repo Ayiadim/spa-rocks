@@ -1,19 +1,22 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import App from "./components/App";
+import * as mobx from "mobx";
+import {Provider} from "mobx-react";
+import store from "./store";
 
-const render = (Root: { new(): React.Component }) => {
+mobx.useStrict(true);
+
+const render = () => {
+    const App = require("./components/App").default;
+
     ReactDOM.render(
-        <Root/>,
+        <Provider store={store}>
+            <App/>
+        </Provider>,
         document.getElementById("app")
     );
 };
 
-render(App);
+render();
 
-if (module.hot) {
-    module.hot.accept("./components/App", () => {
-        const Root = require("./components/App").default;
-        render(Root);
-    });
-}
+module.hot && module.hot.accept("./components/App", render);

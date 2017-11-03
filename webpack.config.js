@@ -2,10 +2,10 @@ const path = require("path");
 const webpack = require("webpack");
 const {CheckerPlugin} = require("awesome-typescript-loader");
 
-const isProdutcion = process.argv.indexOf("-p") !== -1;
+const isProduction = process.argv.indexOf("-p") !== -1;
 
 module.exports = {
-    devtool: !isProdutcion && "source-map",
+    devtool: !isProduction && "source-map",
     entry: {
         commons: [
             "promise-polyfill",
@@ -48,9 +48,7 @@ module.exports = {
         new CheckerPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             name: "commons",
-            minChunks: (module, count) => {
-                return module.context && module.context.indexOf("node_modules") !== -1 || count === 2;
-            }
+            minChunks: (module, count) => module.context && module.context.indexOf("node_modules") !== -1 || count >= 2
         })
     ]
 };
