@@ -1,29 +1,28 @@
 import * as React from "react";
-import {inject, observer} from "mobx-react";
-import {Store} from "../store/index";
+import Loadable from "react-loadable";
+import {BrowserRouter, Switch, Route} from "react-router-dom";
+import Layout from "./Layout";
+import Loading from "./Loading";
+import NotFound from "./NotFound";
+import Home from "./Home";
 
-interface IProps {
-    store?: Store;
-}
+const Counter = Loadable({
+    loader: () => import("../pages/counter"),
+    loading: Loading
+});
 
-@inject("store")
-@observer
-class App extends React.Component<IProps> {
-    store: Store;
-
-    constructor(props: IProps) {
-        super(props);
-
-        this.store = props.store!;
-    }
-
+class App extends React.Component {
     render() {
         return (
-            <div>
-                <button onClick={() => this.store.increment()}>increment</button>
-                <button onClick={() => this.store.decrement()}>decrement</button>
-                <div>{this.store.count}</div>
-            </div>
+            <BrowserRouter>
+                <Layout>
+                    <Switch>
+                        <Route exact path="/" component={Home}/>
+                        <Route path="/counter" component={Counter}/>
+                        <Route component={NotFound}/>
+                    </Switch>
+                </Layout>
+            </BrowserRouter>
         );
     }
 }

@@ -2,28 +2,23 @@ const path = require("path");
 const webpack = require("webpack");
 const {CheckerPlugin} = require("awesome-typescript-loader");
 
-const isProduction = process.argv.indexOf("-p") !== -1;
-
 module.exports = {
-    devtool: !isProduction && "source-map",
     entry: {
-        commons: [
+        common: [
             "promise-polyfill",
             "whatwg-fetch",
-            "bootstrap/dist/css/bootstrap.css"
+            "./Client/scss/bootstrap.scss"
         ],
-        main: "./Client/main.tsx"
+        main: "./Client/index.tsx"
     },
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "./wwwroot/dist"),
         publicPath: "dist/"
     },
+    devtool: "source-map",
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"]
-    },
-    stats: {
-        modules: false
     },
     module: {
         rules: [
@@ -32,22 +27,28 @@ module.exports = {
                 use: "awesome-typescript-loader?silent=true"
             },
             {
-                test: /\.css$/,
+                test: /\.scss$/,
                 use: [
                     "style-loader",
-                    "css-loader"
+                    "css-loader",
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            plugins: () => [
+                                require("precss"),
+                                require("autoprefixer")
+                            ]
+                        }
+                    },
+                    "sass-loader"
                 ]
-            },
-            {
-                test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
-                use: "file-loader"
             }
         ]
     },
     plugins: [
         new CheckerPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
-            name: "commons",
+            name: "common",
             minChunks: (module, count) => module.context && module.context.indexOf("node_modules") !== -1 || count >= 2
         })
     ]
