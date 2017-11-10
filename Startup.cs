@@ -28,7 +28,8 @@ namespace SPARocks
 
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    HotModuleReplacement = true
+                    HotModuleReplacement = true,
+                    ConfigFile = "webpack.dev.js"
                 });
             }
 

@@ -7,7 +7,7 @@ module.exports = {
         common: [
             "promise-polyfill",
             "whatwg-fetch",
-            "./Client/scss/bootstrap.scss"
+            "./Client/styles/bootstrap.scss"
         ],
         main: "./Client/index.tsx"
     },
@@ -16,7 +16,6 @@ module.exports = {
         path: path.resolve(__dirname, "./wwwroot/dist"),
         publicPath: "dist/"
     },
-    devtool: "source-map",
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"]
     },

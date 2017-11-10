@@ -1,10 +1,10 @@
 import * as React from "react";
-import "../scss/main.scss";
+import "../styles/Main.scss";
 
 class Main extends React.Component {
     render() {
         return (
-            <main>
+            <main className="Main">
                 <div className="container">
                     {this.props.children}
                 </div>
